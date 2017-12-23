@@ -1,0 +1,175 @@
+﻿<!doctype html>
+<html lang="en" ng-app="checkinApp">
+<head>
+    <title>yevgeller.net &mdash; Check-in Single-Page App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-resource.min.js"></script>
+    <script src="/Static/assets/ac/js/checkinApp.js"></script>
+    <!--<script src="/Static/assets/ac/data/checkinReasons.js"></script>-->
+    <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
+    <style>
+        .notes {
+            font-style: italic;
+            text-decoration-style: dotted;
+            max-width: 300px;
+            margin-top: 12px;
+        }
+
+        .emphasize {
+            font-weight: bold;
+        }
+        .customerAreaDiv {
+            clear: both;
+            overflow: hidden;
+            min-width: 500px;
+            float: left;
+            margin: 25px;
+            border-width: 2px;
+            border-style: dotted;
+            border-color: #ffc61b;
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+     <script>
+         (function (i, s, o, g, r, a, m) {
+             i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                 (i[r].q = i[r].q || []).push(arguments)
+             }, i[r].l = 1 * new Date(); a = s.createElement(o),
+             m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+         })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+         ga('create', 'UA-44055144-1', 'yevgeller.net');
+         ga('send', 'pageview');
+     </script>
+    <header>
+        <div class="content-wrapper">
+            <p class="site-title" style="float: left"><a href="/">:)</a></p>
+        </div>
+        <div class="float-right">
+            <nav>
+                <ul id="menu">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/Home/Contact">Contact</a></li>
+                    <li><a href="/MyProject/List">My projects</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div id="body" ng-controller="SignInCtrl">
+        <div class="siteHeader">
+            <h2>Customer tracker</h2>
+        </div>
+        <div class="customerAreaDiv">
+            <div class="notes">This is the customer side of things. Customer provides the name, and reasons why he/she came in.</div>
+            <h3 style="text-align:center;">Please sign in:</h3>
+            Your name: <input type="text"
+                              ng-model="sys.customerName"
+                              ng-focus="sys.hideCustomerQueue()" />
+
+            <h4>Select one or more reasons for your visit:</h4>
+            <ul>
+                <li ng-repeat="e in sys.errors">{{e.message}}</li>
+            </ul>
+            <div>
+                Filter:<input type="text" ng-model="sys.reasonFilter" />
+                <button ng-click="sys.reasonFilter='';">X</button>
+            </div>
+            <div ng-repeat="r2 in sys.reasonsFromDb|filter:sys.reasonFilter|orderBy:['sort']">
+                <label class="checkbox" for="{{r2.name}}">
+                    <input type="checkbox"
+                           ng-model="sys.selection.ids[r2.name]"
+                           name="group"
+                           id="{{r2.name}}" />
+                    {{r2.name}}
+                </label>
+            </div>
+            Other:<input type="text" ng-model="sys.other" />
+            <br /><br />
+            <div class="notes">
+                Then, customer clicks the button to sign in, and the system provides feedback.
+                If there have been more than five customers today, the system will provide the approximate wait time.
+            </div>
+            <br />
+            <button ng-click="sys.register()" ng-hide="sys.welcomeCustomerMessage.length>0">Register</button>
+            <span>{{sys.welcomeCustomerMessage}}</span>
+        </div>
+        <div style="min-width:500px; max-width: 700px; float:right;margin:18px;">
+            <div class="notes">
+                This is the "house" side of things.
+                Register on the left to view the list of technicians
+                and use one of their pins to view the actual customer queue.
+            </div>
+            <div style="margin-bottom:12px;">
+                <input type="text"
+                       ng-model="sys.typedPin"
+                       ng-keypress="sys.acceptPinEntry($event.keyCode, 1)"
+                       ng-hide="sys.showCustomerQueue"
+                       style="width:50px" />
+                <span ng-show="sys.showCustomerQueue">{{sys.welcomeTechMessage}}</span>
+                <button ng-click="sys.logoutTech()" ng-show="sys.showCustomerQueue">Log out</button>
+            </div>
+            <div ng-repeat="reg in sys.registrations | orderBy:['date']:false"
+                 ng-show="sys.showCustomerQueue">
+                <span ng-class="{emphasize: sys.showDetailsForRecordId == reg.date}"
+                      style="margin-top:18px;margin-bottom:18px;display:block;"
+                      ng-mouseover="sys.showVisitReasonsForCustomer(reg.date)"
+                      ng-mouseleave="sys.hideVisitReasons()">
+                    {{$index+1}}. {{reg.fullName}}, <br />
+                    in on: {{reg.friendlyArrivalDate}}
+                    <span>
+                        <button ng-click="sys.closeRecord(reg.date)" ng-show="sys.showDetailsForRecordId == reg.date">Close</button>
+                        <br />
+                        <span ng-repeat="c in reg.reasons" style="max-width:300px;font-size:smaller;">
+                            {{c}}<span ng-show="$index < reg.reasons.length-1">, </span>
+                        </span>
+                        <br />
+                    </span>
+                </span>
+            </div>
+            <div class="notes" ng-show="sys.showCustomerQueue" style="margin:25px;">
+                Once "logged in", a technician can view the customers in line. Hovering over their records
+                allows him/her to see the reasons why customers came in today. Once the customer been helped,
+                techician clicks the 'Close' button by the customer's name and the record disappears from queue.
+
+                This window stays open only
+                for a certain amount of time. If the technician is done looking at it, he/she can click 'log out'
+                button to hide the queue.
+            </div>
+            <div ng-repeat="t in sys.techs" ng-show="sys.registrations.length && !sys.showCustomerQueue">
+                {{t}}
+            </div>
+        </div>
+        <div style="clear:both;margin:25px;">
+            <button ng-click="sys.fillQueue()">Click this button to get random customers for today and previous days</button>
+            <br />
+            <label ng-show="sys.completedRegistrations.length+sys.registrations.length">
+                <input type="checkbox" ng-model="sys.showDatabase" />Check this box to show/hide the database
+            </label>
+            <div ng-show="sys.showDatabase" style="margin:25px;">
+                <div class="notes" ng-show="sys.completedRegistrations.length">
+                    The data below shows all open and closed customer visits, it is a raw snapshot of the database in JSON format.
+                </div>
+                <div ng-repeat="r in sys.completedRegistrations">
+                    {{r}}
+                </div>
+            </div>
+        </div>
+        <!--<div ng-repeat="m in debug.messages|orderBy:['msg']">
+        {{m}}
+    </div>-->
+
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; 2013-2014 - yevgeller.net</p>
+                <span style="color: #896805">Programming is fun!</span>
+            </div>
+        </div>
+    </footer>
+    <!--Yes, I wrote this web site myself. No, not from scratch-->
+</body>
+</html>
