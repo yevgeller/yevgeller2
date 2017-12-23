@@ -1,0 +1,1 @@
+    <add name="DefaultConnection" providerName="System.Data.SqlClient" connectionString="Data Source=64.71.180.27;Initial Catalog=yevgeller;Persist Security Info=True;User ID=dbu;Password=h47A8y#h$*" />

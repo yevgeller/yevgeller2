@@ -192,9 +192,15 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712231811152_InitialMigration.cs" />
+    <Compile Include="Migrations\201712231811152_InitialMigration.Designer.cs">
+      <DependentUpon>201712231811152_InitialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -221,6 +227,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\yevgeller.net - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -234,6 +242,32 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Static\amurstars.html" />
+    <Content Include="Static\angularCheckin.html" />
+    <Content Include="Static\angularProjects.html" />
+    <Content Include="Static\assets\ac\data\checkinReasons.js" />
+    <Content Include="Static\assets\ac\js\checkinApp.js" />
+    <Content Include="Static\assets\amurstars.css" />
+    <Content Include="Static\assets\ap\data\projects.js" />
+    <Content Include="Static\assets\ap\js\app.js" />
+    <Content Include="Static\assets\ap\js\model.js" />
+    <Content Include="Static\assets\ap\partials\projectDetail.html" />
+    <Content Include="Static\assets\ap\partials\projectList.html" />
+    <Content Include="Static\assets\ap\test\controller.conf.js" />
+    <Content Include="Static\assets\ap\test\controllerSpec.js" />
+    <Content Include="Static\assets\ap\test\e2e.conf.js" />
+    <Content Include="Static\assets\ap\test\e2e.tests.js" />
+    <Content Include="Static\assets\ap\test\web-server.js" />
+    <Content Include="Static\assets\clock.js" />
+    <Content Include="Static\assets\encoder.js" />
+    <Content Include="Static\assets\logo.png" />
+    <Content Include="Static\assets\mines.css" />
+    <Content Include="Static\assets\mines.js" />
+    <Content Include="Static\assets\unicode-base.js" />
+    <Content Include="Static\assets\xregexp-min.js" />
+    <Content Include="Static\encoder.html" />
+    <Content Include="Static\jsClock.html" />
+    <Content Include="Static\mines.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -271,10 +305,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Projects\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201712231811152_InitialMigration.resx">
+      <DependentUpon>201712231811152_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
