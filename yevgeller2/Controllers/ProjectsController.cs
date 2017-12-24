@@ -18,7 +18,7 @@ namespace yevgeller2.Controllers
         // GET: Projects
         public ActionResult Index()
         {
-            var myProjects = _db.MyProjects;
+            var myProjects = _db.Projects;
             return View(myProjects);
         }
 

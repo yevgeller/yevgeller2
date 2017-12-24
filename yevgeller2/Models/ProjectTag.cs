@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace yevgeller2.Models
 {
@@ -11,8 +7,8 @@ namespace yevgeller2.Models
     {
         [Key]
         [Column(Order=1)]
-        public int MyProjecTId { get; set; }
-        public MyProject MyProject { get; set; }
+        public int ProjectId { get; set; }
+        public Project Project { get; set; }
 
         [Key]
         [Column(Order =2)]

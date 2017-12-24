@@ -1,4 +1,4 @@
-﻿@model IEnumerable<yevgeller2.Models.MyProject>
+﻿@model IEnumerable<yevgeller2.Models.Project>
 
 @{
     ViewBag.Title = "Index";
@@ -9,7 +9,7 @@
 @foreach (var item in Model)
 {
     <div class="projectInfo">
-        <div class="projectHeader">@item.Name</div>
+        <div class="projectHeader">@item.</div>
         <span class="projectYears">@item.Year</span>
         <span class="projectTechnology">(@item.Technology)</span>
         <div class="projectDescription">@item.Description</div>

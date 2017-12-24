@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace yevgeller2.Models
 {
-    public class MyProject
+    public class Project
     {
         public int Id { get; set; }
 
@@ -28,7 +26,7 @@ namespace yevgeller2.Models
 
         public string Url { get; set; }
 
-        public List<MyProjectTag> Tags { get; set; }
+        public List<Tag> Tags { get; set; }
 
         public string TagsForDisplay
         {
