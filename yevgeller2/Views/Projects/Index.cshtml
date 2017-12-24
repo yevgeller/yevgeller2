@@ -1,0 +1,22 @@
+﻿@model IEnumerable<yevgeller2.Models.MyProject>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@foreach (var item in Model)
+{
+    <div class="projectInfo">
+        <div class="projectHeader">@item.Name</div>
+        <span class="projectYears">@item.Year</span>
+        <span class="projectTechnology">(@item.Technology)</span>
+        <div class="projectDescription">@item.Description</div>
+        <a href="@item.Url">Link</a>
+
+        <span class="projectTags">
+            @item.TagsForDisplay
+        </span>
+    </div>
+}
