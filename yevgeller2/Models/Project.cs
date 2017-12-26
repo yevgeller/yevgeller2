@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace yevgeller2.Models
 {
@@ -32,8 +33,18 @@ namespace yevgeller2.Models
         {
             get
             {
-                string allTags = String.Join("; ", Tags);
-                return allTags.Substring(0, allTags.Length - 1);
+                if (Tags == null)
+                    return "no tags";
+
+                string result = string.Empty;
+
+                foreach (string name in Tags
+                    .OrderBy(x => x.Name)
+                    .Select(x => x.Name))
+                {
+                    result += name + "; ";
+                }
+                return result.Substring(0, result.Length - 1);
             }
         }
     }

@@ -109,3 +109,16 @@ textarea {
     background: 0 0;
     border: 0;
 }
+
+.projectInfo {
+    margin: 0 0 6px 18px;
+    font-weight:normal;
+}
+
+.projectHeader {
+    font-size:x-large;
+}
+
+.projectYears {
+    font-size:x-small;
+}
