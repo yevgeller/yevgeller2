@@ -28,28 +28,7 @@ namespace yevgeller2.Models
                     pt.MapLeftKey("ProjectId");
                     pt.MapRightKey("TagId");
                     pt.ToTable("ProjectTag");
-                });
-
-            //modelBuilder.Entity<ProjectTag>()
-            //    .HasKey(k => new { k.ProjectId, k.TagId });
-
-            //modelBuilder.Entity<ProjectTag>()
-            //    .HasRequired(m => m.Project)
-            //    .WithMany(t => t.Tags)
-            //    .HasForeignKey(t => t.TagId);
-
-            //modelBuilder.Entity<ProjectTag>()
-            //    .HasRequired(m => m.Tag)
-            //    .WithMany(t => t.Projects)
-            //    .HasForeignKey(mt => mt.ProjectId);
-
-            //modelBuilder.Entity<Tag>()
-            //    .HasOne
-
-            //modelBuilder.Entity<MyProject>()
-            //    .HasMany(p => p.Tags)
-            //    .WithMany();
-                
+                });                
 
             base.OnModelCreating(modelBuilder); 
         }
