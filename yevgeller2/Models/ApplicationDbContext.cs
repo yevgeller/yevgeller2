@@ -26,7 +26,7 @@ namespace yevgeller2.Models
                 .Map(pt =>
                 {
                     pt.MapLeftKey("ProjectId");
-                    pt.MapLeftKey("TagId");
+                    pt.MapRightKey("TagId");
                     pt.ToTable("ProjectTag");
                 });
 

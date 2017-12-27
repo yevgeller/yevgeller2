@@ -1,0 +1,87 @@
+Migrations.Configuration.cs:
+
+        protected override void Seed(Models.ApplicationDbContext context)
+        {
+            context.Projects.AddOrUpdate(p => p.Id,
+                new Project
+                {
+                    Name = "yevgeller.net",
+                    Description = "I wrote this web site. I use it as a sandbox for trying out new stuff.",
+                    Year = "2013-present",
+                    Technology = "ASP.Net MVC",
+                    Url = "http://yevgeller.net",
+                    //Tags = new List<Tag>
+                    //    {
+                    //        new Tag {  Name="C#"},
+                    //        new Tag {  Name=".Net"},
+                    //        new Tag {  Name="ASP.Net"},
+                    //        new Tag {  Name="JavaScript"},
+                    //        new Tag {  Name = "SQL" },
+                    //        new Tag {  Name = "Database" },
+                    //        new Tag {  Name = "jQuery" }
+                    //    }
+                });
+
+            context.Tags.AddOrUpdate(t => t.Name,
+                new Tag { Name = "C#" },
+                new Tag { Name = ".Net" },
+                new Tag { Name = "WPF" },
+                new Tag { Name = "Universal Windows Platform" },
+                new Tag { Name = "ASP.Net" },
+                new Tag { Name = "JavaScript" },
+                new Tag { Name = "SQL" },
+                new Tag { Name = "Database" },
+                new Tag { Name = "jQuery" }
+                );
+
+            //  This method will be called after migrating to the latest version.
+
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            //  to avoid creating duplicate seed data. E.g.
+            //
+            //    context.People.AddOrUpdate(
+            //      p => p.FullName,
+            //      new Person { FullName = "Andrew Peters" },
+            //      new Person { FullName = "Brice Lambson" },
+            //      new Person { FullName = "Rowan Miller" }
+            //    );
+            //
+        }
+
+Models.ApplicationDbContext.cs:
+
+       protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Project>()
+                .HasMany<Tag>(p => p.Tags)
+                .WithMany(t => t.Projects)
+                .Map(pt =>
+                {
+                    pt.MapLeftKey("ProjectId");
+                    pt.MapLeftKey("TagId");
+                    pt.ToTable("ProjectTag");
+                });
+
+            //modelBuilder.Entity<ProjectTag>()
+            //    .HasKey(k => new { k.ProjectId, k.TagId });
+
+            //modelBuilder.Entity<ProjectTag>()
+            //    .HasRequired(m => m.Project)
+            //    .WithMany(t => t.Tags)
+            //    .HasForeignKey(t => t.TagId);
+
+            //modelBuilder.Entity<ProjectTag>()
+            //    .HasRequired(m => m.Tag)
+            //    .WithMany(t => t.Projects)
+            //    .HasForeignKey(mt => mt.ProjectId);
+
+            //modelBuilder.Entity<Tag>()
+            //    .HasOne
+
+            //modelBuilder.Entity<MyProject>()
+            //    .HasMany(p => p.Tags)
+            //    .WithMany();
+                
+
+            base.OnModelCreating(modelBuilder); 
+        }

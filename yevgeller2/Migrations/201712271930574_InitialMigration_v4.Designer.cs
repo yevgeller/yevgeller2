@@ -7,13 +7,13 @@ namespace yevgeller2.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialMigration : IMigrationMetadata
+    public sealed partial class InitialMigration_v4 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialMigration_v4));
         
         string IMigrationMetadata.Id
         {
-            get { return "201712242102477_InitialMigration"; }
+            get { return "201712271930574_InitialMigration_v4"; }
         }
         
         string IMigrationMetadata.Source

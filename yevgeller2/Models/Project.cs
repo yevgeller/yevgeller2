@@ -27,13 +27,16 @@ namespace yevgeller2.Models
 
         public string Url { get; set; }
 
-        public List<Tag> Tags { get; set; }
+        public virtual ICollection<Tag> Tags { get; set; }
 
         public string TagsForDisplay
         {
             get
             {
                 if (Tags == null)
+                    return "no tags";
+
+                if (!Tags.Any())
                     return "no tags";
 
                 string result = string.Empty;
@@ -44,6 +47,8 @@ namespace yevgeller2.Models
                 {
                     result += name + "; ";
                 }
+
+
                 return result.Substring(0, result.Length - 1);
             }
         }

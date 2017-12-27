@@ -3,7 +3,7 @@ namespace yevgeller2.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialMigration : DbMigration
+    public partial class InitialMigration_v4 : DbMigration
     {
         public override void Up()
         {
@@ -101,14 +101,14 @@ namespace yevgeller2.Migrations
                 "dbo.ProjectTag",
                 c => new
                     {
+                        ProjectId = c.Int(nullable: false),
                         TagId = c.Int(nullable: false),
-                        Tag_Id = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => new { t.TagId, t.Tag_Id })
-                .ForeignKey("dbo.Projects", t => t.TagId, cascadeDelete: true)
-                .ForeignKey("dbo.Tags", t => t.Tag_Id, cascadeDelete: true)
-                .Index(t => t.TagId)
-                .Index(t => t.Tag_Id);
+                .PrimaryKey(t => new { t.ProjectId, t.TagId })
+                .ForeignKey("dbo.Projects", t => t.ProjectId, cascadeDelete: true)
+                .ForeignKey("dbo.Tags", t => t.TagId, cascadeDelete: true)
+                .Index(t => t.ProjectId)
+                .Index(t => t.TagId);
             
         }
         
@@ -118,10 +118,10 @@ namespace yevgeller2.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.ProjectTag", "Tag_Id", "dbo.Tags");
-            DropForeignKey("dbo.ProjectTag", "TagId", "dbo.Projects");
-            DropIndex("dbo.ProjectTag", new[] { "Tag_Id" });
+            DropForeignKey("dbo.ProjectTag", "TagId", "dbo.Tags");
+            DropForeignKey("dbo.ProjectTag", "ProjectId", "dbo.Projects");
             DropIndex("dbo.ProjectTag", new[] { "TagId" });
+            DropIndex("dbo.ProjectTag", new[] { "ProjectId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");

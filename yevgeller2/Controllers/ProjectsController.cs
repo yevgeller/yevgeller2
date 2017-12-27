@@ -49,7 +49,14 @@ namespace yevgeller2.Controllers
 
         public ActionResult Create()
         {
-            List<Tag> allTags = _db.Tags.ToList();
+            ProjectAndTagsViewModel patvm = CreateProjectAndTagsViewModelForEntry();
+
+            return View(patvm);
+        }
+
+        private ProjectAndTagsViewModel CreateProjectAndTagsViewModelForEntry()
+        {
+            List<Tag> allTags = _db.Tags.OrderBy(x => x.Name).ToList();
             List<SelectListItem> tagsChoice = new List<SelectListItem>();
             SelectListGroup group1 = new SelectListGroup { Name = "group1" };
             foreach (var t in allTags)
@@ -59,8 +66,8 @@ namespace yevgeller2.Controllers
                     Text = t.Name,
                     Value = t.Name,
                     Selected = false,
-                    Disabled = false,
-                    Group = group1
+                    Disabled = false
+                    //Group = group1
                 };
 
                 tagsChoice.Add(tag);
@@ -72,16 +79,25 @@ namespace yevgeller2.Controllers
                 TagsSelectItems = tagsChoice
 
             };
-
-            return View(patvm);
+            return patvm;
         }
 
         [HttpPost]
         public ActionResult Create(ProjectAndTagsViewModel patvm)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid || patvm.SelectedTags == null)
             {
-                //return here the same stuff as it is for the Create when it's encountered the first time
+                ProjectAndTagsViewModel pvm = CreateProjectAndTagsViewModelForEntry();
+                return View(pvm);
+            }
+
+            List<Tag> selectedTags = new List<Tag>();
+            List<Tag> allTags = _db.Tags.ToList();
+
+            foreach(string sli in patvm.SelectedTags)
+            {
+                Tag t = allTags.Where(x => x.Name == sli).FirstOrDefault();
+                if (t != null) selectedTags.Add(t);
             }
 
             var newProject = new Project
@@ -91,7 +107,7 @@ namespace yevgeller2.Controllers
                 Technology = patvm.Project.Technology,
                 Url = patvm.Project.Url,
                 Year = patvm.Project.Year,
-                Tags = new List<Tag> { new Tag { Name = "C#" }, new Tag { Name = "ASP.Net" } }
+                Tags = selectedTags 
             };
 
             _db.Projects.Add(newProject);
