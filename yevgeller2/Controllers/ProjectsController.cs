@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
 using yevgeller2.Models;
+using yevgeller2.ViewModels;
 
 namespace yevgeller2.Controllers
 {
@@ -16,19 +18,66 @@ namespace yevgeller2.Controllers
         // GET: Projects
         public ActionResult Index()
         {
-            var myProjects = _db.Projects.Include(p => p.Tags);
-            return View(myProjects);
+            List<Project> projects = _db.Projects
+                .Include(a => a.Tags)
+                .ToList();
+
+            ProjectViewViewModel pvvm = new ProjectViewViewModel
+            {
+                Projects = projects,
+                IsAuthenticated = User.Identity.IsAuthenticated
+            };
+
+            //foreach(Project p in projects)
+            //{
+            //    //re-do this with Automapper or something
+            //    ProjectViewViewModel projViewModelItem = new ProjectViewViewModel
+            //    {
+            //        Year = p.Year,
+            //        Name = p.Name,
+            //        Description = p.Description,
+            //        Technology = p.Technology,
+            //        Url = p.Url,
+            //        TagsForDisplay = p.TagsForDisplay,
+            //        IsAuthenticated = User.Identity.IsAuthenticated
+            //    };
+
+            //    pv.Add(projViewModelItem);
+            //}
+            return View(pvvm);
         }
 
         public ActionResult Create()
         {
+            List<Tag> allTags = _db.Tags.ToList();
+            List<SelectListItem> tagsChoice = new List<SelectListItem>();
+            SelectListGroup group1 = new SelectListGroup { Name = "group1" };
+            foreach (var t in allTags)
+            {
+                SelectListItem tag = new SelectListItem
+                {
+                    Text = t.Name,
+                    Value = t.Name,
+                    Selected = false,
+                    Disabled = false,
+                    Group = group1
+                };
 
+                tagsChoice.Add(tag);
+            }
 
-            return View();
+            ProjectAndTagsViewModel patvm = new ProjectAndTagsViewModel
+            {
+                Tags = allTags,
+                TagsSelectItems = tagsChoice
+
+            };
+
+            return View(patvm);
         }
 
         [HttpPost]
-        public ActionResult Create(Project project)
+        public ActionResult Create(ProjectAndTagsViewModel patvm)
         {
             if(!ModelState.IsValid)
             {
@@ -37,11 +86,11 @@ namespace yevgeller2.Controllers
 
             var newProject = new Project
             {
-                Name = project.Name,
-                Description = project.Description,
-                Technology = project.Technology,
-                Url = project.Url,
-                Year = project.Year,
+                Name = patvm.Project.Name,
+                Description = patvm.Project.Description,
+                Technology = patvm.Project.Technology,
+                Url = patvm.Project.Url,
+                Year = patvm.Project.Year,
                 Tags = new List<Tag> { new Tag { Name = "C#" }, new Tag { Name = "ASP.Net" } }
             };
 

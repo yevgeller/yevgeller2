@@ -1,4 +1,4 @@
-﻿@model IEnumerable<yevgeller2.Models.Project>
+﻿@model yevgeller2.ViewModels.ProjectViewViewModel
 
 @{
     ViewBag.Title = "List of projects";
@@ -6,7 +6,7 @@
 
 <h2>Index</h2>
 
-@foreach (var item in Model)
+@foreach (var item in Model.Projects)
 {
     <div class="projectInfo">
         <div class="projectHeader">@item.Name</div>
@@ -18,5 +18,8 @@
         <span class="projectTags">
             @item.TagsForDisplay
         </span>
+        @*@if(Model.IsAuthenticated)*@
+            <a href="#">Edit this project -- do later and lock it up </a>
+        
     </div>
 }
