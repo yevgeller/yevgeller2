@@ -56,6 +56,7 @@ namespace yevgeller2.Controllers
 
         private ProjectAndTagsViewModel CreateProjectAndTagsViewModelForEntry()
         {
+            System.Random r = new System.Random();
             List<Tag> allTags = _db.Tags.OrderBy(x => x.Name).ToList();
             List<SelectListItem> tagsChoice = new List<SelectListItem>();
             SelectListGroup group1 = new SelectListGroup { Name = "group1" };
@@ -76,8 +77,8 @@ namespace yevgeller2.Controllers
             ProjectAndTagsViewModel patvm = new ProjectAndTagsViewModel
             {
                 Tags = allTags,
-                TagsSelectItems = tagsChoice
-
+                TagsSelectItems = tagsChoice,
+                IdNo = r.Next(System.Int32.MaxValue-1)
             };
             return patvm;
         }
@@ -93,6 +94,22 @@ namespace yevgeller2.Controllers
 
             List<Tag> selectedTags = new List<Tag>();
             List<Tag> allTags = _db.Tags.ToList();
+            //List<Tag> newTags = new List<Tag>();
+
+            List<string> candidateTags = patvm.CandidateTags.Split(';').ToList();
+            foreach(string candidate in candidateTags)
+            {
+                Tag mayBe = allTags
+                    .Where(x => x.Name.Equals(candidate, System.StringComparison.InvariantCultureIgnoreCase))
+                    .FirstOrDefault();
+
+                if(mayBe == null)
+                {
+//                    _db.Tags.Add(new Tag { Name = candidate });
+                    selectedTags.Add(new Tag { Name = candidate });
+                }
+            }
+
 
             foreach(string sli in patvm.SelectedTags)
             {

@@ -15,5 +15,12 @@ namespace yevgeller2.ViewModels
 
         [Display(Name ="Select one or more tags")]
         public IEnumerable<string> SelectedTags { get; set; }
+
+        [Display(Name ="Other tags")]
+        public string CandidateTags { get; set; }
+
+        //This is a session identifier to store tags in the 
+        //temp database
+        public int IdNo { get; set; }
     }
 }

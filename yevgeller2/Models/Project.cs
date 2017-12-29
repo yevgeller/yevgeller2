@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -9,19 +8,19 @@ namespace yevgeller2.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Indicate year or years")]
         [MaxLength(32)]
         public string Year { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Project name is required")]
         [MaxLength(128)]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Briefly describe the \"masterpiece\"")]
         [MaxLength(1024)]
         public string Description { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Indicate the main technology or technologies used")]
         [MaxLength(128)]
         public string Technology { get; set; }
 
