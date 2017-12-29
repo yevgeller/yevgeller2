@@ -122,3 +122,20 @@ textarea {
 .projectYears {
     font-size:x-small;
 }
+
+.projectTagSelected {
+    font-weight:bold;
+    color:blue;
+}
+
+.projectTagUnselected {
+    font-weight:normal;
+    color:black;
+}
+
+.tagSelection {
+    margin: 6px 12px;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0px;
+}

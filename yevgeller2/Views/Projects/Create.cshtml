@@ -67,8 +67,19 @@
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
+
     </div>
 }
+<div class="tags">
+    @foreach (var tag in Model.TagsSelectItems)
+    {
+        <button class="tagSelection projectTagUnselected" js-attr1="@tag.Value">@tag.Text</button>
+    }
+
+    <button class="tagSelection projectTagUnselected" js-attre1="item1">item1</button>
+
+</div>
+
 
 <div>
     @Html.ActionLink("Back to List", "Index")
@@ -76,4 +87,30 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $btns = $(".tagSelection");
+            $btns.on("click", function (e) {
+                //var a = e.target.innerHTML;
+                //console.log(a);
+
+                var $thisBtn = $(this);// $(e.target);
+                if ($thisBtn.hasClass("projectTagUnselected")) {
+                    console.log($thisBtn.text() + " was selected");
+                    var txt = $thisBtn.text();
+                    $thisBtn.html("- " + txt);
+                    $thisBtn.removeClass("projectTagUnselected").addClass("projectTagSelected");
+                } else {
+                    $thisBtn.removeClass("projectTagSelected").addClass("projectTagUnselected");
+                    var txt = $thisBtn.text();
+                    txt = txt.substring(2, txt.length);
+                    $thisBtn.html(txt);
+                    console.log($thisBtn.text() + " unselected");
+                }
+                //console.log("innerHtml: " + e.target.innerHTML + "; js-attr1:" + e.target.getAttribute("js-attr1"));
+            });
+        });
+
+    </script>
 }
