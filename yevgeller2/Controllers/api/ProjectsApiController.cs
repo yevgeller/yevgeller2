@@ -1,13 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNet.Identity;
+using System;
+using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using yevgeller2.DTOs;
+using yevgeller2.Models;
 
 namespace yevgeller2.Controllers.api
 {
     public class ProjectsApiController : ApiController
     {
+        ApplicationDbContext _db;
+        private string userId;
+
+        public ProjectsApiController()
+        {
+            userId = User.Identity.GetUserId() ?? "temp user Id";
+            _db = new ApplicationDbContext();
+        }
+
+        [HttpPost]
+        public IHttpActionResult RecordTag(TagDto tagDto)
+        {
+            TempStorageTag tst = new TempStorageTag
+            {
+                IdNo = tagDto.IdNo,
+                Name = tagDto.TagName,
+                TimeStamp = DateTime.Now,
+                UserId = userId
+            };
+
+            _db.TempStorageTags.Add(tst);
+            _db.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IHttpActionResult RemoveTag(TagDto tagDto)
+        {
+            TempStorageTag tst = _db.TempStorageTags
+                .Where(x => x.Name == tagDto.TagName && x.UserId == userId && x.IdNo == tagDto.IdNo)
+                .FirstOrDefault();
+
+            if (tst == null) return BadRequest("No such temp tag");
+
+            _db.Entry(tst).State = EntityState.Deleted;
+            _db.SaveChanges();
+
+            return Ok();
+        }
+
     }
 }

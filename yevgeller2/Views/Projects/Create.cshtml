@@ -57,7 +57,7 @@
             <div class="col-md-10">
                 @foreach (var tag in Model.TagsSelectItems)
                 {
-                    <input type="button" class="tagSelection projectTagUnselected" js-attr1="@tag.Value" js-attr2="@Model.IdNo" value="@tag.Text" />
+                    <input type="button" class="tagSelection projectTagUnselected" js-tagName="@tag.Value" js-sessionId="@Model.IdNo" value="@tag.Text" />
                 }
             </div>
         </div>
@@ -101,17 +101,35 @@
                 //console.log(a);
 
                 var $thisBtn = $(this);// $(e.target);
+                var txt = $thisBtn.val();
+                var dto = { idNo: $thisBtn.attr("js-sessionId"), tagName: $thisBtn.attr("js-tagName") };
+                var recordUrl = "/api/projectsapi/recordtag";
+                var removeUrl = "/api/projectsapi/removetag"
                 if ($thisBtn.hasClass("projectTagUnselected")) {
-                    console.log($thisBtn.val() + " was selected");
-                    var txt = $thisBtn.val();
-                    $thisBtn.val("- " + txt);
-                    $thisBtn.removeClass("projectTagUnselected").addClass("projectTagSelected");
+                    $.post(recordUrl, dto)
+                        .done(function () {
+                            console.log(txt + " was selected");
+                            $thisBtn.val("- " + txt);
+                            $thisBtn.removeClass("projectTagUnselected").addClass("projectTagSelected");
+                        })
+                        .fail(function () {
+                            console.log("Saving of potential tag \"" + txt + "\" failed.");
+                        });                    
                 } else {
-                    $thisBtn.removeClass("projectTagSelected").addClass("projectTagUnselected");
-                    var txt = $thisBtn.val();
-                    txt = txt.substring(2, txt.length);
-                    $thisBtn.val(txt);
-                    console.log($thisBtn.val() + " unselected");
+                    $.post(removeUrl, dto)
+                        .done(function () {
+                            console.log(txt + " was removed from temp tags collection");
+                            $thisBtn.val(txt.substring(2, txt.length));
+                            $thisBtn.removeClass("projectTagSelected").addClass("projectTagUnselected");
+                        })
+                        .fail(function () {
+                            console.log("Removing tag \"" + txt + "\" from temp collection failed.")
+                        });
+
+                    //var txt = $thisBtn.val();
+                    //txt = txt.substring(2, txt.length);
+                    //$thisBtn.val(txt);
+                    //console.log($thisBtn.val() + " unselected");
                 }
                 //console.log("innerHtml: " + e.target.innerHTML + "; js-attr1:" + e.target.getAttribute("js-attr1"));
             });

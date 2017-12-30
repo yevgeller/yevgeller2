@@ -201,6 +201,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\api\ProjectsApiController.cs" />
+    <Compile Include="Migrations\201712292240159_WebAPI_for_Project_Tags.cs" />
+    <Compile Include="Migrations\201712292240159_WebAPI_for_Project_Tags.Designer.cs">
+      <DependentUpon>201712292240159_WebAPI_for_Project_Tags.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TempStorageTag.cs" />
+    <Compile Include="DTOs\TagDto.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
@@ -259,6 +265,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\site.js" />
     <Content Include="Static\amurstars.html" />
     <Content Include="Static\angularCheckin.html" />
     <Content Include="Static\angularProjects.html" />
@@ -332,6 +339,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712271930574_InitialMigration_v4.resx">
       <DependentUpon>201712271930574_InitialMigration_v4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712292240159_WebAPI_for_Project_Tags.resx">
+      <DependentUpon>201712292240159_WebAPI_for_Project_Tags.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
