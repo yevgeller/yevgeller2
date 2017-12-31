@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 
 namespace yevgeller2.Models
 {
@@ -29,9 +32,29 @@ namespace yevgeller2.Models
                     pt.MapLeftKey("ProjectId");
                     pt.MapRightKey("TagId");
                     pt.ToTable("ProjectTag");
-                });                
+                });
 
-            base.OnModelCreating(modelBuilder); 
+            base.OnModelCreating(modelBuilder);
+        }
+
+        internal IEnumerable<Tag> GetExistingSelectedTags(string userId, int sessionNo)
+        {
+            List<TempStorageTag> tempSelectedTags = TempStorageTags
+                .Where(x => x.UserId == userId && x.IdNo == sessionNo).ToList();
+
+            List<Tag> allTags = Tags.ToList();
+
+            List<Tag> result = new List<Tag>();
+
+            foreach (TempStorageTag tst in tempSelectedTags)
+            {
+                Tag t = allTags.Where(x => x.Name == tst.Name).FirstOrDefault();
+                if (t != null) result.Add(t);
+            }
+
+            tempSelectedTags.ForEach(x => this.TempStorageTags.Remove(x));
+
+            return result;
         }
     }
 }

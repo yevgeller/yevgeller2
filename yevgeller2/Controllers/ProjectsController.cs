@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -10,10 +11,13 @@ namespace yevgeller2.Controllers
     public class ProjectsController : Controller
     {
         ApplicationDbContext _db;
+        string userId;
 
         public ProjectsController()
         {
             _db = new ApplicationDbContext();
+            if (User is null) userId = "temp user Id";
+            else userId = User.Identity.GetUserId() ?? "temp user Id"; //somehow it works in the ProjectsApiController, but not here
         }
         // GET: Projects
         public ActionResult Index()
@@ -86,36 +90,59 @@ namespace yevgeller2.Controllers
         [HttpPost]
         public ActionResult Create(ProjectAndTagsViewModel patvm)
         {
-            if (!ModelState.IsValid || patvm.SelectedTags == null)
+            if (!ModelState.IsValid || patvm.IdNo == 0)// || patvm.SelectedTags == null)
             {
                 ProjectAndTagsViewModel pvm = CreateProjectAndTagsViewModelForEntry();
                 return View(pvm);
             }
-
             List<Tag> selectedTags = new List<Tag>();
-            List<Tag> allTags = _db.Tags.ToList();
-            //List<Tag> newTags = new List<Tag>();
-
-            List<string> candidateTags = patvm.CandidateTags.Split(';').ToList();
-            foreach(string candidate in candidateTags)
+            List<Tag> existingTags = _db.Tags.ToList();
+            
+            //first, figure out new candidate tags
+            if (patvm.CandidateTags.Length > 0)
             {
-                Tag mayBe = allTags
-                    .Where(x => x.Name.Equals(candidate, System.StringComparison.InvariantCultureIgnoreCase))
-                    .FirstOrDefault();
-
-                if(mayBe == null)
+                bool newTagsAdded = false;
+                List<string> candidateTags = patvm.CandidateTags.Split(';').ToList();
+                foreach (string candidate in candidateTags)
                 {
-//                    _db.Tags.Add(new Tag { Name = candidate });
-                    selectedTags.Add(new Tag { Name = candidate });
+                    if (candidate.Trim().Length > 0)
+                    {
+                        Tag mayBe = existingTags
+                            .Where(x => x.Name.Equals(candidate, System.StringComparison.InvariantCultureIgnoreCase))
+                            .FirstOrDefault();
+
+                        if (mayBe == null)
+                        {
+                            Tag newTag = new Tag { Name = candidate };
+                            //                    _db.Tags.Add(new Tag { Name = candidate });
+                            selectedTags.Add(newTag);
+                            _db.Tags.Add(newTag);
+                            newTagsAdded = true;
+                        }
+                    }
                 }
+                if (newTagsAdded) _db.SaveChanges();
             }
+            //Created new tags and saved them into newTagsToAdd
 
+            List<Tag> selectedExistingTags = _db.GetExistingSelectedTags(userId, patvm.IdNo).ToList();
 
-            foreach(string sli in patvm.SelectedTags)
-            {
-                Tag t = allTags.Where(x => x.Name == sli).FirstOrDefault();
-                if (t != null) selectedTags.Add(t);
-            }
+            List<Tag> selectedTagsReadyForPosting = selectedTags
+                .Union(selectedExistingTags)
+                .ToList();
+
+            //existing tags that user selected
+            //List<TempStorageTag> selectedExistingTags = _db.TempStorageTags
+            //    .Where(t=>t.IdNo == patvm.IdNo && t.UserId == userId)
+            //    .ToList();
+
+            //foreach(TempStorageTag tst in selectedExistingTags
+
+            //foreach(string sli in patvm.SelectedTags)
+            //{
+            //    Tag t = allTags.Where(x => x.Name == sli).FirstOrDefault();
+            //    if (t != null) selectedTags.Add(t);
+            //}
 
             var newProject = new Project
             {
@@ -124,8 +151,11 @@ namespace yevgeller2.Controllers
                 Technology = patvm.Project.Technology,
                 Url = patvm.Project.Url,
                 Year = patvm.Project.Year,
-                Tags = selectedTags 
+                Tags = selectedTagsReadyForPosting 
             };
+
+            //selectedExistingTags.ForEach(x=>_db.TempStorageTags)
+
 
             _db.Projects.Add(newProject);
             _db.SaveChanges();
