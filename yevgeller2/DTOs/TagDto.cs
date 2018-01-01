@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using yevgeller2.Models;
 
 namespace yevgeller2.DTOs
 {
@@ -7,5 +8,6 @@ namespace yevgeller2.DTOs
     {
         public int IdNo { get; set; }
         public string TagName { get; set; }
+        public ProjectAction Action { get; set; }
     }
 }

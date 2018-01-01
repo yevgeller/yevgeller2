@@ -26,6 +26,7 @@ namespace yevgeller2.Controllers.api
             {
                 IdNo = tagDto.IdNo,
                 Name = tagDto.TagName,
+                Action = tagDto.Action,
                 TimeStamp = DateTime.Now,
                 UserId = userId
             };
@@ -39,7 +40,10 @@ namespace yevgeller2.Controllers.api
         public IHttpActionResult RemoveTag(TagDto tagDto)
         {
             TempStorageTag tst = _db.TempStorageTags
-                .Where(x => x.Name == tagDto.TagName && x.UserId == userId && x.IdNo == tagDto.IdNo)
+                .Where(x => x.Name == tagDto.TagName 
+                        && x.UserId == userId 
+                        && x.IdNo == tagDto.IdNo)
+//                        && x.Action == ProjectAction.Create)
                 .FirstOrDefault();
 
             if (tst == null) return BadRequest("No such temp tag");

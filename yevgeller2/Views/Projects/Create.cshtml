@@ -102,7 +102,11 @@
 
                 var $thisBtn = $(this);// $(e.target);
                 var txt = $thisBtn.val();
-                var dto = { idNo: $thisBtn.attr("js-sessionId"), tagName: $thisBtn.attr("js-tagName") };
+                var dto = {
+                    idNo: $thisBtn.attr("js-sessionId"),
+                    tagName: $thisBtn.attr("js-tagName"),
+                    action: 1
+                };
                 var recordUrl = "/api/projectsapi/recordtag";
                 var removeUrl = "/api/projectsapi/removetag"
                 if ($thisBtn.hasClass("projectTagUnselected")) {

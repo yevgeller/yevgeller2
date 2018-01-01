@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace yevgeller2.Controllers
 
         private ProjectAndTagsViewModel CreateProjectAndTagsViewModelForEntry()
         {
-            System.Random r = new System.Random();
+            Random r = new Random();
             List<Tag> allTags = _db.Tags.OrderBy(x => x.Name).ToList();
             List<SelectListItem> tagsChoice = new List<SelectListItem>();
             SelectListGroup group1 = new SelectListGroup { Name = "group1" };
@@ -82,7 +83,7 @@ namespace yevgeller2.Controllers
             {
                 Tags = allTags,
                 TagsSelectItems = tagsChoice,
-                IdNo = r.Next(System.Int32.MaxValue-1)
+                IdNo = r.Next(1, System.Int32.MaxValue-1)
             };
             return patvm;
         }
@@ -123,27 +124,13 @@ namespace yevgeller2.Controllers
                 }
                 if (newTagsAdded) _db.SaveChanges();
             }
-            //Created new tags and saved them into newTagsToAdd
-
+            //then get selected tags that already existi
             List<Tag> selectedExistingTags = _db.GetExistingSelectedTags(userId, patvm.IdNo).ToList();
-
+            //merge them together
             List<Tag> selectedTagsReadyForPosting = selectedTags
                 .Union(selectedExistingTags)
                 .ToList();
-
-            //existing tags that user selected
-            //List<TempStorageTag> selectedExistingTags = _db.TempStorageTags
-            //    .Where(t=>t.IdNo == patvm.IdNo && t.UserId == userId)
-            //    .ToList();
-
-            //foreach(TempStorageTag tst in selectedExistingTags
-
-            //foreach(string sli in patvm.SelectedTags)
-            //{
-            //    Tag t = allTags.Where(x => x.Name == sli).FirstOrDefault();
-            //    if (t != null) selectedTags.Add(t);
-            //}
-
+            //construct new Project object
             var newProject = new Project
             {
                 Name = patvm.Project.Name,
@@ -153,12 +140,39 @@ namespace yevgeller2.Controllers
                 Year = patvm.Project.Year,
                 Tags = selectedTagsReadyForPosting 
             };
-
-            //selectedExistingTags.ForEach(x=>_db.TempStorageTags)
-
-
+            
             _db.Projects.Add(newProject);
             _db.SaveChanges();
+
+            return RedirectToAction("Index", "Projects");
+        }
+
+        public ActionResult Edit(int id)
+        {
+            Random r = new Random();
+
+            Project project = _db.Projects.Where(x => x.Id == id).FirstOrDefault();
+            List<Tag> projectTags = _db.Projects
+                .Where(x => x.Id == id)
+                .SelectMany(p => p.Tags)
+                .ToList();
+
+            ProjectAndTagsViewModel patvm = new ProjectAndTagsViewModel
+            {
+                Project = project, 
+                Tags = projectTags, //will determine the buttons
+                CandidateTags = string.Empty, //should be empty, no new tags here
+                IdNo = r.Next(1, int.MaxValue-1), //need to get 
+                SelectedTags = null,
+                TagsSelectItems = null
+            };
+
+            return View(patvm);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int id, ProjectAndTagsViewModel patvm)
+        {
 
             return RedirectToAction("Index", "Projects");
         }

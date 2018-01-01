@@ -201,10 +201,20 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\api\ProjectsApiController.cs" />
+    <Compile Include="Controllers\dummyController.cs" />
     <Compile Include="Migrations\201712292240159_WebAPI_for_Project_Tags.cs" />
     <Compile Include="Migrations\201712292240159_WebAPI_for_Project_Tags.Designer.cs">
       <DependentUpon>201712292240159_WebAPI_for_Project_Tags.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712312214027_ActionTypeInTempStorageTag.cs" />
+    <Compile Include="Migrations\201712312214027_ActionTypeInTempStorageTag.Designer.cs">
+      <DependentUpon>201712312214027_ActionTypeInTempStorageTag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801010304002_ChangingActionToEnum.cs" />
+    <Compile Include="Migrations\201801010304002_ChangingActionToEnum.Designer.cs">
+      <DependentUpon>201801010304002_ChangingActionToEnum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProjectAction.cs" />
     <Compile Include="Models\TempStorageTag.cs" />
     <Compile Include="DTOs\TagDto.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -331,6 +341,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\dummy\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -342,6 +353,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712292240159_WebAPI_for_Project_Tags.resx">
       <DependentUpon>201712292240159_WebAPI_for_Project_Tags.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712312214027_ActionTypeInTempStorageTag.resx">
+      <DependentUpon>201712312214027_ActionTypeInTempStorageTag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801010304002_ChangingActionToEnum.resx">
+      <DependentUpon>201801010304002_ChangingActionToEnum.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
