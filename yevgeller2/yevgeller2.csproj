@@ -201,7 +201,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\api\ProjectsApiController.cs" />
-    <Compile Include="Controllers\dummyController.cs" />
     <Compile Include="Migrations\201712292240159_WebAPI_for_Project_Tags.cs" />
     <Compile Include="Migrations\201712292240159_WebAPI_for_Project_Tags.Designer.cs">
       <DependentUpon>201712292240159_WebAPI_for_Project_Tags.cs</DependentUpon>
@@ -338,6 +337,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\Create.cshtml" />
+    <Content Include="Views\Projects\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

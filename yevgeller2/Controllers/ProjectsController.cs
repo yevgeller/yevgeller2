@@ -81,7 +81,8 @@ namespace yevgeller2.Controllers
 
             ProjectAndTagsViewModel patvm = new ProjectAndTagsViewModel
             {
-                Tags = allTags,
+                ProjectTags = allTags,
+                AllTags = allTags, 
                 TagsSelectItems = tagsChoice,
                 IdNo = r.Next(1, System.Int32.MaxValue-1)
             };
@@ -152,20 +153,26 @@ namespace yevgeller2.Controllers
             Random r = new Random();
 
             Project project = _db.Projects.Where(x => x.Id == id).FirstOrDefault();
+            
             List<Tag> projectTags = _db.Projects
                 .Where(x => x.Id == id)
                 .SelectMany(p => p.Tags)
                 .ToList();
 
-            ProjectAndTagsViewModel patvm = new ProjectAndTagsViewModel
-            {
-                Project = project, 
-                Tags = projectTags, //will determine the buttons
-                CandidateTags = string.Empty, //should be empty, no new tags here
-                IdNo = r.Next(1, int.MaxValue-1), //need to get 
-                SelectedTags = null,
-                TagsSelectItems = null
-            };
+            ProjectAndTagsViewModel patvm = CreateProjectAndTagsViewModelForEntry();
+
+            patvm.Project = project;
+            patvm.ProjectTags = projectTags;
+            patvm.AllTags = _db.Tags.ToList();
+
+            //{
+            //    Project = project, 
+            //    Tags = projectTags, //will determine the buttons
+            //    CandidateTags = string.Empty, //should be empty, no new tags here
+            //    IdNo = r.Next(1, int.MaxValue-1), //need to get 
+            //    SelectedTags = null,
+            //    TagsSelectItems = null
+            //};
 
             return View(patvm);
         }

@@ -11,9 +11,13 @@ namespace yevgeller2.ViewModels
         public Project Project { get; set; }
 
         //its Tags
-        public List<Tag> Tags { get; set; }
+        public List<Tag> ProjectTags { get; set; }
 
-        //NOT NEEDED: this is for the dropdown
+        //Something to store all possible tags
+        public List<Tag> AllTags { get; set; }
+
+
+        //Need to replace this with viable candidate for allTags
         [Display(Name ="Select one or more tags")]
         public List<SelectListItem> TagsSelectItems { get; set; }
 

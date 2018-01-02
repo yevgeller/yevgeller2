@@ -6,16 +6,16 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
 
     <div class="form-horizontal">
         <hr />
-        @Html.HiddenFor(m=>m.IdNo)
+        @Html.HiddenFor(m => m.IdNo)
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Project.Year, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Project.Year, new { htmlAttributes = new { @Value = "Year " + Model.IdNo, @class = "form-control", autofocus = "autofocus", placeholder = (DateTime.Now.Year - 1) + "-present" } })
+                @Html.EditorFor(model => model.Project.Year, new { htmlAttributes = new { @class = "form-control", autofocus = "autofocus", placeholder = (DateTime.Now.Year - 1) + "-present" } })
                 @Html.ValidationMessageFor(model => model.Project.Year, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -23,7 +23,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Project.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Project.Name, new { htmlAttributes = new { @Value="Name " + Model.IdNo, @class = "form-control", placeholder = "project name" } })
+                @Html.EditorFor(model => model.Project.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "project name" } })
                 @Html.ValidationMessageFor(model => model.Project.Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -31,7 +31,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Project.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Project.Description, new {@Value="Descr " + Model.IdNo, @class = "form-control", placeholder = "up to a 1K symbols here" })
+                @Html.TextAreaFor(model => model.Project.Description, new { @class = "form-control", placeholder = "up to a 1K symbols here" })
                 @Html.ValidationMessageFor(model => model.Project.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -39,7 +39,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Project.Technology, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Project.Technology, new { htmlAttributes = new {Value="Tech " + Model.IdNo, @class = "form-control", placeholder = "main tech" } })
+                @Html.EditorFor(model => model.Project.Technology, new { htmlAttributes = new { @class = "form-control", placeholder = "main tech" } })
                 @Html.ValidationMessageFor(model => model.Project.Technology, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -47,7 +47,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Project.Url, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Project.Url, new { htmlAttributes = new {@Value = "Url " + Model.IdNo, @class = "form-control", placeholder = "link to the \"masterpiece\"" } })
+                @Html.EditorFor(model => model.Project.Url, new { htmlAttributes = new { @class = "form-control", placeholder = "link to the \"masterpiece\"" } })
                 @Html.ValidationMessageFor(model => model.Project.Url, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -57,7 +57,14 @@
             <div class="col-md-10">
                 @foreach (var tag in Model.AllTags)
                 {
-                    <input type="button" class="tagSelection projectTagUnselected" js-tagName="@tag.Name" js-sessionId="@Model.IdNo" value="@tag.Name" />
+                    if (Model.ProjectTags.Contains(tag))
+                    {
+                        <input type="button" class="tagSelection projectTagSelected" js-tagName="@tag.Name" js-sessionId="@Model.IdNo" value="- @tag.Name" />
+                    }
+                    else
+                    {
+                        <input type="button" class="tagSelection projectTagUnselected" js-tagName="@tag.Name" js-sessionId="@Model.IdNo" value="@tag.Name" />
+                    }
                 }
             </div>
         </div>
@@ -65,7 +72,7 @@
         <div class="form-group">
             @Html.LabelFor(m => m.CandidateTags, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(m => m.CandidateTags, new { htmlAttributes = new {@Value = "perl; python; ;     ;" + Model.IdNo, @class = "form-control", placeholder = "separated by a semicolon" } })
+                @Html.EditorFor(m => m.CandidateTags, new { htmlAttributes = new { @Value = "perl; python; ;     ;" + Model.IdNo, @class = "form-control", placeholder = "separated by a semicolon" } })
                 @Html.ValidationMessageFor(m => m.CandidateTags, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -79,7 +86,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Update" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -108,7 +115,21 @@
                     action: 1
                 };
                 var recordUrl = "/api/projectsapi/recordtag";
-                var removeUrl = "/api/projectsapi/removetag"
+                $.post(recordUrl, dto)
+                    .done(function () {
+                        console.log(txt + " was clicked");
+                        if ($thisBtn.hasClass("projectTagUnselected")) {
+                            $thisBtn.val("- " + txt);
+                            $thisBtn.removeClass("projectTagUnselected").addClass("projectTagSelected");
+                        } else {
+                            $thisBtn.val(txt.substring(2, txt.length));
+                            $thisBtn.removeClass("projectTagSelected").addClass("projectTagUnselected");
+                        }
+                    })
+                    .fail(function () {
+                        console.log("Saving of potential tag \"" + txt + "\" failed.");
+                    });
+                /*var removeUrl = "/api/projectsapi/removetag"
                 if ($thisBtn.hasClass("projectTagUnselected")) {
                     $.post(recordUrl, dto)
                         .done(function () {
@@ -118,7 +139,7 @@
                         })
                         .fail(function () {
                             console.log("Saving of potential tag \"" + txt + "\" failed.");
-                        });                    
+                        });
                 } else {
                     $.post(removeUrl, dto)
                         .done(function () {
@@ -136,6 +157,7 @@
                     //console.log($thisBtn.val() + " unselected");
                 }
                 //console.log("innerHtml: " + e.target.innerHTML + "; js-attr1:" + e.target.getAttribute("js-attr1"));
+                */
             });
         });
 

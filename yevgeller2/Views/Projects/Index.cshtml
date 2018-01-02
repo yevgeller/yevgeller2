@@ -19,7 +19,7 @@
             @item.TagsForDisplay
         </span>
         @*@if(Model.IsAuthenticated)*@
-            <a href="#">Edit this project -- do later and lock it up </a>
+            <a href="@Url.Action("Edit", "Projects", new { id=item.Id})">Edit</a>
         
     </div>
 }
