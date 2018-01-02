@@ -53,6 +53,5 @@ namespace yevgeller2.Controllers.api
 
             return Ok();
         }
-
     }
 }

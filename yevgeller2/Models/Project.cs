@@ -28,6 +28,9 @@ namespace yevgeller2.Models
 
         public virtual ICollection<Tag> Tags { get; set; }
 
+        //fake "delete" option
+        public bool IsHidden { get; set; }
+
         public string TagsForDisplay
         {
             get

@@ -24,6 +24,7 @@ namespace yevgeller2.Controllers
         public ActionResult Index()
         {
             List<Project> projects = _db.Projects
+                .Where(p => p.IsHidden == false)
                 .Include(a => a.Tags)
                 .ToList();
 
@@ -82,9 +83,9 @@ namespace yevgeller2.Controllers
             ProjectAndTagsViewModel patvm = new ProjectAndTagsViewModel
             {
                 ProjectTags = allTags,
-                AllTags = allTags, 
+                AllTags = allTags,
                 TagsSelectItems = tagsChoice,
-                IdNo = r.Next(1, System.Int32.MaxValue-1)
+                IdNo = r.Next(1, System.Int32.MaxValue - 1)
             };
             return patvm;
         }
@@ -99,7 +100,7 @@ namespace yevgeller2.Controllers
             }
             List<Tag> selectedTags = new List<Tag>();
             List<Tag> existingTags = _db.Tags.ToList();
-            
+
             //first, figure out new candidate tags
             if (patvm.CandidateTags.Length > 0)
             {
@@ -139,9 +140,9 @@ namespace yevgeller2.Controllers
                 Technology = patvm.Project.Technology,
                 Url = patvm.Project.Url,
                 Year = patvm.Project.Year,
-                Tags = selectedTagsReadyForPosting 
+                Tags = selectedTagsReadyForPosting
             };
-            
+
             _db.Projects.Add(newProject);
             _db.SaveChanges();
 
@@ -153,7 +154,7 @@ namespace yevgeller2.Controllers
             Random r = new Random();
 
             Project project = _db.Projects.Where(x => x.Id == id).FirstOrDefault();
-            
+
             List<Tag> projectTags = _db.Projects
                 .Where(x => x.Id == id)
                 .SelectMany(p => p.Tags)
@@ -165,23 +166,100 @@ namespace yevgeller2.Controllers
             patvm.ProjectTags = projectTags;
             patvm.AllTags = _db.Tags.ToList();
 
-            //{
-            //    Project = project, 
-            //    Tags = projectTags, //will determine the buttons
-            //    CandidateTags = string.Empty, //should be empty, no new tags here
-            //    IdNo = r.Next(1, int.MaxValue-1), //need to get 
-            //    SelectedTags = null,
-            //    TagsSelectItems = null
-            //};
-
             return View(patvm);
         }
 
         [HttpPost]
         public ActionResult Edit(int id, ProjectAndTagsViewModel patvm)
         {
+            List<Tag> allTags = _db.Tags.ToList();
 
+            //Get the typed tags
+            List<string> typedInTags = new List<string>();
+            if (patvm.CandidateTags != null)
+                typedInTags = patvm.CandidateTags.Split(';').ToList();
+
+            //Get the changed tags, compare with the see if the user changed any labels
+            List<string> changedTagsByButtonClicking = _db.TempStorageTags
+                .Where(t => t.IdNo == patvm.IdNo)
+                .GroupBy(x => x.Name)
+                .Where(c => c.Count() % 2 == 1)
+                .Select(c => c.Key)
+                .ToList();
+
+            List<string> potentialNewTags = typedInTags.Union(changedTagsByButtonClicking).ToList();
+            List<Tag> tagsChangedForThisProject = new List<Tag>(); //use this as the base for the projectTags
+
+            //check if any tags are new
+            bool newTagsRecorded = false;
+            foreach (string candidateNewTag in potentialNewTags)
+            {
+                if (!String.IsNullOrWhiteSpace(candidateNewTag))
+                {
+                    Tag t = new Tag { Name = candidateNewTag.Trim() };
+                    tagsChangedForThisProject.Add(t);
+
+                    if (!allTags.Contains(t))
+                    {
+                        _db.Tags.Add(t);
+                        newTagsRecorded = true;
+                    }
+                }
+            }
+
+            //if new tags found, add those
+            if (newTagsRecorded)
+            {
+                _db.SaveChanges();
+            }
+
+            allTags = _db.Tags.ToList(); //refresh tags
+
+            //update project properties
+            Project p = _db.Projects.Where(x => x.Id == id).FirstOrDefault();
+            if (p != null)
+            {
+                List<Tag> tags = p.Tags.ToList();
+                /*if the Tag is in the projectTags, it needs to be removed
+                  since the user clicked it. If it is not there, it is new and needs
+                  to be added */
+                foreach (Tag t in tagsChangedForThisProject)
+                {
+                    if (tags.Contains(t)) //p.Tags.Contains(t)) //Where(x=>x == t).Any()) //check here that IEquatable is working
+                    {
+                        tags.Remove(t);
+                    }
+                    else
+                    {
+                        Tag existingTagWithTheSameName = allTags
+                            .Where(x => x.Name.Trim().ToLower()
+                                .CompareTo(t.Name.Trim().ToLower()) == 0)
+                            .FirstOrDefault();
+                        if (existingTagWithTheSameName != null)
+                            tags.Add(allTags.Where(x => x.Name == t.Name).First());
+                    }
+                }
+
+                foreach (Tag t in p.Tags)
+                    if (t.Id == 0)
+                        throw new Exception("new tag");
+
+                p.Name = patvm.Project.Name;
+                p.Technology = patvm.Project.Technology;
+                p.Url = patvm.Project.Url;
+                p.Year = patvm.Project.Year;
+                p.Description = patvm.Project.Description;
+                p.Tags = tags;
+            }
+            //save changes
+            _db.SaveChanges();
             return RedirectToAction("Index", "Projects");
+        }
+
+        [HttpPost]
+        public ActionResult HideProject(int id)
+        {
+            throw new NotImplementedException();
         }
 
         protected override void Dispose(bool disposing)

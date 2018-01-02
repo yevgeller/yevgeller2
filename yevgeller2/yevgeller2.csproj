@@ -213,6 +213,10 @@
     <Compile Include="Migrations\201801010304002_ChangingActionToEnum.Designer.cs">
       <DependentUpon>201801010304002_ChangingActionToEnum.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801021744590_AddingOptionToHideProject.cs" />
+    <Compile Include="Migrations\201801021744590_AddingOptionToHideProject.Designer.cs">
+      <DependentUpon>201801021744590_AddingOptionToHideProject.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ProjectAction.cs" />
     <Compile Include="Models\TempStorageTag.cs" />
     <Compile Include="DTOs\TagDto.cs" />
@@ -359,6 +363,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801010304002_ChangingActionToEnum.resx">
       <DependentUpon>201801010304002_ChangingActionToEnum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801021744590_AddingOptionToHideProject.resx">
+      <DependentUpon>201801021744590_AddingOptionToHideProject.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
