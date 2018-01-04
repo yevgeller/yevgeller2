@@ -44,15 +44,7 @@ namespace yevgeller2.Models
 
                 string result = String.Join("; ", Tags.OrderBy(x => x.Name).Select(x => x.Name));
 
-                //foreach (string name in Tags
-                //    .OrderBy(x => x.Name)
-                //    .Select(x => x.Name))
-                //{
-                //    result += name + "; ";
-                //}
-
-
-                return result; //.Substring(0, result.Length - 1);
+                return result;
             }
         }
 

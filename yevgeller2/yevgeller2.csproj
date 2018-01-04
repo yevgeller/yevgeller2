@@ -305,6 +305,7 @@
     <Content Include="Static\encoder.html" />
     <Content Include="Static\jsClock.html" />
     <Content Include="Static\mines.html" />
+    <Content Include="Static\yevgeller_v1.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -342,6 +343,9 @@
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\Create.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
+    <Content Include="Static\yevgeller_v1_files\v1.css" />
+    <Content Include="Static\yevgeller_v1_files\jquery.js" />
+    <Content Include="Static\yevgeller_v1_files\modernizr" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
