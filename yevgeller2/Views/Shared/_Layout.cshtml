@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - ASP.NET MVC Application</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -26,22 +26,13 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
                     <li>@Html.ActionLink("Record a new project", "Create", "Projects")</li>
+                    }
                 </ul>
-                @*@Html.Partial("_LoginPartial")*@
-                @*<div class="dropdown show">
-                    <a class="btn btn-secondary dropdown-toggle" href="https://example.com" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Random links
-                    </a>
-
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </div>*@
+                @Html.Partial("_LoginPartial")
             </div>
-
         </div>
     </div>
     <div class="container body-content">

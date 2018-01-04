@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -41,17 +42,37 @@ namespace yevgeller2.Models
                 if (!Tags.Any())
                     return "no tags";
 
-                string result = string.Empty;
+                string result = String.Join("; ", Tags.OrderBy(x => x.Name).Select(x => x.Name));
 
-                foreach (string name in Tags
-                    .OrderBy(x => x.Name)
-                    .Select(x => x.Name))
-                {
-                    result += name + "; ";
-                }
+                //foreach (string name in Tags
+                //    .OrderBy(x => x.Name)
+                //    .Select(x => x.Name))
+                //{
+                //    result += name + "; ";
+                //}
 
 
-                return result.Substring(0, result.Length - 1);
+                return result; //.Substring(0, result.Length - 1);
+            }
+        }
+
+        public string ShowStatus
+        {
+            get
+            {
+                if (IsHidden)
+                    return "Hidden";
+                return "Visible";
+            }
+        }
+
+        public bool ShowUrl
+        {
+            get
+            {
+                if (Url.IndexOf('/') > -1) return true;
+
+                return false;
             }
         }
     }

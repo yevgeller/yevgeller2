@@ -72,7 +72,7 @@
         <div class="form-group">
             @Html.LabelFor(m => m.CandidateTags, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(m => m.CandidateTags, new { htmlAttributes = new { @Value = "perl; python; ;     ;" + Model.IdNo, @class = "form-control", placeholder = "separated by a semicolon" } })
+                @Html.EditorFor(m => m.CandidateTags, new { htmlAttributes = new { @Value = "perl; python; ;     ; " , @class = "form-control", placeholder = "separated by a semicolon" } })
                 @Html.ValidationMessageFor(m => m.CandidateTags, "", new { @class = "text-danger" })
             </div>
         </div>

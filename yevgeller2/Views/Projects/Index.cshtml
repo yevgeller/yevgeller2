@@ -4,22 +4,66 @@
     ViewBag.Title = "List of projects";
 }
 
-<h2>Index</h2>
+<h2>All projects</h2>
 
 @foreach (var item in Model.Projects)
 {
     <div class="projectInfo">
-        <div class="projectHeader">@item.Name</div>
-        <span class="projectYears">@item.Year</span>
-        <span class="projectTechnology">(@item.Technology)</span>
+        <div class="projectHeader">
+            <span class="projectName">@item.Name</span>
+
+            <span class="projectYears">( @item.Year, main technology: @item.Technology)</span>
+        </div>
         <div class="projectDescription">@item.Description</div>
-        <a href="@item.Url">Link</a>
 
         <span class="projectTags">
-            @item.TagsForDisplay
+            <span class="tagHeader">Tags:</span> @item.TagsForDisplay
         </span>
-        @*@if(Model.IsAuthenticated)*@
-            <a href="@Url.Action("Edit", "Projects", new { id=item.Id})">Edit</a>
-        
+        <div class="voffset12">
+            @if (item.ShowUrl)
+            {
+                <span class="glyphicon glyphicon-link"></span>
+                <a href="@item.Url" target="_blank" class="projectYears">Link</a>
+            }
+            @if (Model.IsAuthenticated)
+            {
+                <a href="@Url.Action("Edit", "Projects", new { id=item.Id})" class="serviceLinks" >Edit</a>
+
+                @Html.ActionLink("Hide", "HideProject", "Projects", new { id = item.Id, @class = "margin12 serviceLinks" }, null)
+                <div class="projectVisibilityStatus" style="color:green; margin:6px 0 0 0;">@item.ShowStatus</div>
+            }
+        </div>
     </div>
 }
+@Html.ActionLink("Back to the front page", "Index", "Home", null, new { @class = "voffset50" })
+
+
+@if (Model.IsAuthenticated)
+{
+    <hr />
+    <h3>These projects are hidden for non-authenticated users:</h3>
+
+    foreach (var item in Model.HiddenProjects)
+    {
+        <div class="projectInfo">
+            <div class="projectHeader">@item.Name</div>
+            <span class="projectYears">@item.Year</span>
+            <span class="projectTechnology">(@item.Technology)</span>
+            <div class="projectDescription">@item.Description</div>
+            <div class="projectVisibilityStatus" style="color:red">@item.ShowStatus</div>
+            <a href="@item.Url" target="_blank">Link</a>
+
+            <span class="projectTags">
+                @item.TagsForDisplay
+            </span>
+            @*@if(Model.IsAuthenticated)*@
+            <a href="@Url.Action("Edit", "Projects", new { id = item.Id })">Edit</a>
+
+            @Html.ActionLink("Show", "HideProject", new { id = item.Id }, null)
+        </div>
+    }
+
+
+    @Html.ActionLink("Back2", "Index", "Home", null, new { @class = "voffset50" })
+}
+

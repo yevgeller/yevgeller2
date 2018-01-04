@@ -8,6 +8,7 @@ using yevgeller2.Models;
 
 namespace yevgeller2.Controllers.api
 {
+    [Authorize]
     public class ProjectsApiController : ApiController
     {
         ApplicationDbContext _db;
