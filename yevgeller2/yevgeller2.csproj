@@ -297,6 +297,14 @@
     <Content Include="Static\assets\ap\test\web-server.js" />
     <Content Include="Static\assets\clock.js" />
     <Content Include="Static\assets\encoder.js" />
+    <Content Include="Static\assets\images\accent.png" />
+    <Content Include="Static\assets\images\bullet.png" />
+    <Content Include="Static\assets\images\heroAccent.png" />
+    <Content Include="Static\assets\images\siteColorAccent.png" />
+    <Content Include="Static\assets\images\XNADemo_1.png" />
+    <Content Include="Static\assets\images\XNADemo_2.png" />
+    <Content Include="Static\assets\images\XNAFlicker_1.png" />
+    <Content Include="Static\assets\images\XNAFlicker_2.png" />
     <Content Include="Static\assets\logo.png" />
     <Content Include="Static\assets\mines.css" />
     <Content Include="Static\assets\mines.js" />
@@ -345,7 +353,7 @@
     <Content Include="Views\Projects\Edit.cshtml" />
     <Content Include="Static\yevgeller_v1_files\v1.css" />
     <Content Include="Static\yevgeller_v1_files\jquery.js" />
-    <Content Include="Static\yevgeller_v1_files\modernizr" />
+    <Content Include="Static\yevgeller_v1_files\modernizr.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

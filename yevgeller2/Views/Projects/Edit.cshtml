@@ -72,17 +72,10 @@
         <div class="form-group">
             @Html.LabelFor(m => m.CandidateTags, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(m => m.CandidateTags, new { htmlAttributes = new { @Value = "perl; python; ;     ; " , @class = "form-control", placeholder = "separated by a semicolon" } })
+                @Html.EditorFor(m => m.CandidateTags, new { htmlAttributes = new { @class = "form-control", placeholder = "separated by a semicolon" } })
                 @Html.ValidationMessageFor(m => m.CandidateTags, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        @*<div class="form-group">
-                @Html.LabelFor(m => m.TagsSelectItems, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.ListBoxFor(model => model.SelectedTags, Model.TagsSelectItems, new { size = 10 })
-                </div>
-            </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -104,15 +97,12 @@
         $(document).ready(function () {
             var $btns = $(".tagSelection");
             $btns.on("click", function (e) {
-                //var a = e.target.innerHTML;
-                //console.log(a);
 
-                var $thisBtn = $(this);// $(e.target);
+                var $thisBtn = $(this);
                 var txt = $thisBtn.val();
                 var dto = {
                     idNo: $thisBtn.attr("js-sessionId"),
-                    tagName: $thisBtn.attr("js-tagName"),
-                    action: 1
+                    tagName: $thisBtn.attr("js-tagName")
                 };
                 var recordUrl = "/api/projectsapi/recordtag";
                 $.post(recordUrl, dto)
@@ -129,35 +119,6 @@
                     .fail(function () {
                         console.log("Saving of potential tag \"" + txt + "\" failed.");
                     });
-                /*var removeUrl = "/api/projectsapi/removetag"
-                if ($thisBtn.hasClass("projectTagUnselected")) {
-                    $.post(recordUrl, dto)
-                        .done(function () {
-                            console.log(txt + " was selected");
-                            $thisBtn.val("- " + txt);
-                            $thisBtn.removeClass("projectTagUnselected").addClass("projectTagSelected");
-                        })
-                        .fail(function () {
-                            console.log("Saving of potential tag \"" + txt + "\" failed.");
-                        });
-                } else {
-                    $.post(removeUrl, dto)
-                        .done(function () {
-                            console.log(txt + " was removed from temp tags collection");
-                            $thisBtn.val(txt.substring(2, txt.length));
-                            $thisBtn.removeClass("projectTagSelected").addClass("projectTagUnselected");
-                        })
-                        .fail(function () {
-                            console.log("Removing tag \"" + txt + "\" from temp collection failed.")
-                        });
-
-                    //var txt = $thisBtn.val();
-                    //txt = txt.substring(2, txt.length);
-                    //$thisBtn.val(txt);
-                    //console.log($thisBtn.val() + " unselected");
-                }
-                //console.log("innerHtml: " + e.target.innerHTML + "; js-attr1:" + e.target.getAttribute("js-attr1"));
-                */
             });
         });
 

@@ -9,6 +9,7 @@ using yevgeller2.ViewModels;
 
 namespace yevgeller2.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         ApplicationDbContext _db;
@@ -17,10 +18,24 @@ namespace yevgeller2.Controllers
         public ProjectsController()
         {
             _db = new ApplicationDbContext();
-            if (User is null) userId = "temp user Id";
-            else userId = User.Identity.GetUserId() ?? "temp user Id"; //somehow it works in the ProjectsApiController, but not here
+
+            if (User is null) //something fishy is going on here: User is not initialized even when the user is authenticated
+            {
+                var user = System.Threading.Thread.CurrentPrincipal;
+                if (user != null)
+                {
+                    userId = user.Identity.GetUserId();
+                }
+            }
+            else
+            {
+                userId = User.Identity.GetUserId();// ?? "temp user Id"; //somehow it works in the ProjectsApiController, but not here
+            }
+
+            if (userId == null) userId = "temp user Id";
         }
-        // GET: Projects
+
+        [AllowAnonymous]
         public ActionResult Index()
         {
             List<Project> projects = _db.Projects
@@ -343,7 +358,7 @@ namespace yevgeller2.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult HideProject(int id)
+        public void HideProject(int id)
         {
             Project p = _db.Projects
                 .Where(x => x.Id == id)
@@ -356,7 +371,7 @@ namespace yevgeller2.Controllers
 
             _db.SaveChanges();
 
-            return RedirectToAction("Index", "Projects");
+            //return RedirectToAction("Index", "Projects");
         }
 
         protected override void Dispose(bool disposing)

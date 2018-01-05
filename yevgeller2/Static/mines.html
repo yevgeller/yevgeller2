@@ -2,9 +2,18 @@
 
 <html lang="en">
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-44055144-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-44055144-1');
+    </script>
     <meta charset="utf-8">
     <title>Mines game implemented with jQuery</title>
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     <script src="yevgeller_v1_files/jquery.js"></script>
     <link rel="stylesheet" href="yevgeller_v1_files/v1.css" type="text/css" />
@@ -13,18 +22,6 @@
     <meta name="keywords" content="Yevgeniy Geller, Yevgeniy, Geller, programmer, consulting, c#, sql,wpf, javascript, europe, germany" />
 </head>
 <body oncontextmenu="return false;">
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-        ga('create', 'UA-44055144-1', 'yevgeller.net');
-        ga('send', 'pageview');
-
-    </script>
     <header>
         <div class="content-wrapper">
             <p class="site-title" style="float: left"><a href="/">:)</a></p>
@@ -33,7 +30,7 @@
                     <ul id="menu">
                         <li><a href="/">Home</a></li>
                         <li><a href="/Home/Contact">Contact</a></li>
-                        <li><a href=#">My projects</a></li>
+                        <li><a href="#">My projects</a></li>
                     </ul>
                 </nav>
             </div>

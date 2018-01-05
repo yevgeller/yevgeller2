@@ -6,138 +6,131 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.HiddenFor(m=>m.IdNo)
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Project.Year, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Project.Year, new { htmlAttributes = new { @Value = "Year " + Model.IdNo, @class = "form-control", autofocus = "autofocus", placeholder = (DateTime.Now.Year - 1) + "-present" } })
-                @Html.ValidationMessageFor(model => model.Project.Year, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Project.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Project.Name, new { htmlAttributes = new { @Value="Name " + Model.IdNo, @class = "form-control", placeholder = "project name" } })
-                @Html.ValidationMessageFor(model => model.Project.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Project.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Project.Description, new {@Value="Descr " + Model.IdNo, @class = "form-control", placeholder = "up to a 1K symbols here" })
-                @Html.ValidationMessageFor(model => model.Project.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Project.Technology, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Project.Technology, new { htmlAttributes = new {Value="Tech " + Model.IdNo, @class = "form-control", placeholder = "main tech" } })
-                @Html.ValidationMessageFor(model => model.Project.Technology, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Project.Url, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Project.Url, new { htmlAttributes = new {@Value = "Url " + Model.IdNo, @class = "form-control", placeholder = "link to the \"masterpiece\"" } })
-                @Html.ValidationMessageFor(model => model.Project.Url, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group tags">
-            <label class="control-label" for="candidateTags">Select one or more tags:</label>
-            <div class="col-md-10">
-                @foreach (var tag in Model.AllTags)
-                {
-                    <input type="button" class="tagSelection projectTagUnselected" js-tagName="@tag.Name" js-sessionId="@Model.IdNo" value="@tag.Name" />
-                }
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.CandidateTags, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(m => m.CandidateTags, new { htmlAttributes = new {@Value = "perl; python; ;     ;" + Model.IdNo, @class = "form-control", placeholder = "separated by a semicolon" } })
-                @Html.ValidationMessageFor(m => m.CandidateTags, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @*<div class="form-group">
-                @Html.LabelFor(m => m.TagsSelectItems, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-horizontal">
+            <hr />
+            @Html.HiddenFor(m => m.IdNo)
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Project.Year, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.ListBoxFor(model => model.SelectedTags, Model.TagsSelectItems, new { size = 10 })
+                    @Html.EditorFor(model => model.Project.Year, new { htmlAttributes = new { @class = "form-control", autofocus = "autofocus", placeholder = (DateTime.Now.Year - 1) + "-present" } })
+                    @Html.ValidationMessageFor(model => model.Project.Year, "", new { @class = "text-danger" })
                 </div>
-            </div>*@
+            </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="form-group">
+                @Html.LabelFor(model => model.Project.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Project.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "project name" } })
+                    @Html.ValidationMessageFor(model => model.Project.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Project.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Project.Description, new { @class = "form-control", placeholder = "up to a 1K symbols here" })
+                    @Html.ValidationMessageFor(model => model.Project.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Project.Technology, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Project.Technology, new { htmlAttributes = new { @class = "form-control", placeholder = "main tech" } })
+                    @Html.ValidationMessageFor(model => model.Project.Technology, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Project.Url, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Project.Url, new { htmlAttributes = new { @class = "form-control", placeholder = "link to the \"masterpiece\"" } })
+                    @Html.ValidationMessageFor(model => model.Project.Url, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group tags">
+                <label class="control-label" for="candidateTags">Select one or more tags:</label>
+                <div class="col-md-10">
+                    @foreach (var tag in Model.AllTags)
+                    {
+                        <input type="button" class="tagSelection projectTagUnselected" js-tagName="@tag.Name" js-sessionId="@Model.IdNo" value="@tag.Name" />
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.CandidateTags, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.CandidateTags, new { htmlAttributes = new { @class = "form-control", placeholder = "separated by a semicolon" } })
+                    @Html.ValidationMessageFor(m => m.CandidateTags, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    @Html.LabelFor(m => m.TagsSelectItems, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.ListBoxFor(model => model.SelectedTags, Model.TagsSelectItems, new { size = 10 })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
             </div>
         </div>
+    }
+
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
     </div>
-}
 
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var $btns = $(".tagSelection");
+                $btns.on("click", function (e) {
+                    //var a = e.target.innerHTML;
+                    //console.log(a);
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var $btns = $(".tagSelection");
-            $btns.on("click", function (e) {
-                //var a = e.target.innerHTML;
-                //console.log(a);
-
-                var $thisBtn = $(this);// $(e.target);
-                var txt = $thisBtn.val();
-                var dto = {
-                    idNo: $thisBtn.attr("js-sessionId"),
-                    tagName: $thisBtn.attr("js-tagName"),
-                    action: 1
-                };
-                var recordUrl = "/api/projectsapi/recordtag";
-                var removeUrl = "/api/projectsapi/removetag"
-                if ($thisBtn.hasClass("projectTagUnselected")) {
-                    $.post(recordUrl, dto)
-                        .done(function () {
-                            console.log(txt + " was selected");
-                            $thisBtn.val("- " + txt);
-                            $thisBtn.removeClass("projectTagUnselected").addClass("projectTagSelected");
-                        })
-                        .fail(function () {
-                            console.log("Saving of potential tag \"" + txt + "\" failed.");
-                        });                    
-                } else {
-                    $.post(removeUrl, dto)
-                        .done(function () {
-                            console.log(txt + " was removed from temp tags collection");
-                            $thisBtn.val(txt.substring(2, txt.length));
-                            $thisBtn.removeClass("projectTagSelected").addClass("projectTagUnselected");
-                        })
-                        .fail(function () {
-                            console.log("Removing tag \"" + txt + "\" from temp collection failed.")
-                        });
-
-                    //var txt = $thisBtn.val();
-                    //txt = txt.substring(2, txt.length);
-                    //$thisBtn.val(txt);
-                    //console.log($thisBtn.val() + " unselected");
-                }
-                //console.log("innerHtml: " + e.target.innerHTML + "; js-attr1:" + e.target.getAttribute("js-attr1"));
+                    var $thisBtn = $(this);
+                    var txt = $thisBtn.val();
+                    var dto = {
+                        idNo: $thisBtn.attr("js-sessionId"),
+                        tagName: $thisBtn.attr("js-tagName"),
+                        action: 1
+                    };
+                    var recordUrl = "/api/projectsapi/recordtag";
+                    var removeUrl = "/api/projectsapi/removetag"
+                    if ($thisBtn.hasClass("projectTagUnselected")) {
+                        $.post(recordUrl, dto)
+                            .done(function () {
+                                console.log(txt + " was selected");
+                                $thisBtn.val("- " + txt);
+                                $thisBtn.removeClass("projectTagUnselected").addClass("projectTagSelected");
+                            })
+                            .fail(function () {
+                                console.log("Saving of potential tag \"" + txt + "\" failed.");
+                            });
+                    } else {
+                        $.post(removeUrl, dto)
+                            .done(function () {
+                                console.log(txt + " was removed from temp tags collection");
+                                $thisBtn.val(txt.substring(2, txt.length));
+                                $thisBtn.removeClass("projectTagSelected").addClass("projectTagUnselected");
+                            })
+                            .fail(function () {
+                                console.log("Removing tag \"" + txt + "\" from temp collection failed.")
+                            });
+                    }
+                });
             });
-        });
 
-    </script>
-}
+        </script>
+    }

@@ -64,15 +64,6 @@ textarea {
         display:block;
     }
 
-/*.navbar-nav > li > a {
-   color:red;
-}
-
-.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
-    color: red;
-    background-color: transparent;
-}*/
-
 .dropdown {
     position:relative;
 }
@@ -151,6 +142,7 @@ textarea {
 
 .tagHeader {
     text-decoration: underline;
+    margin-right:6px;
 }
 .tagSelection {
     margin: 6px 12px;
@@ -183,4 +175,19 @@ textarea {
 .serviceLinks {
     display:inline-block;
     margin-right: 12px;
+}
+
+.outerDiv {
+    width:100%;
+    overflow:hidden;
+}
+
+.main {
+    width:600px;
+    float:left;
+}
+
+.sideBar {
+    margin-left:620px;
+
 }

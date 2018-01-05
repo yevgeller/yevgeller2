@@ -41,15 +41,32 @@ namespace yevgeller2.Controllers.api
         public IHttpActionResult RemoveTag(TagDto tagDto)
         {
             TempStorageTag tst = _db.TempStorageTags
-                .Where(x => x.Name == tagDto.TagName 
-                        && x.UserId == userId 
+                .Where(x => x.Name == tagDto.TagName
+                        && x.UserId == userId
                         && x.IdNo == tagDto.IdNo)
-//                        && x.Action == ProjectAction.Create)
+                //                        && x.Action == ProjectAction.Create)
                 .FirstOrDefault();
 
             if (tst == null) return BadRequest("No such temp tag");
 
             _db.Entry(tst).State = EntityState.Deleted;
+            _db.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public IHttpActionResult ToggleProjectVisibilityStatus(int id)
+        {
+            Project p = _db.Projects
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+
+            if (p != null)
+            {
+                p.IsHidden = !p.IsHidden;
+            }
+            _db.Entry(p).State = EntityState.Modified;
             _db.SaveChanges();
 
             return Ok();
