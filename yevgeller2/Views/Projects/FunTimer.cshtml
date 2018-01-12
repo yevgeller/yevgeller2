@@ -28,6 +28,7 @@
         });
 
         function startTimer() {
+            clearInterval(timer);
             totalSeconds = 0;
             timer = setInterval(function () {
                 totalSeconds++;
@@ -43,10 +44,6 @@
                 text += " for " + convertSecondsIntoTimerString(totalSeconds);
                 t.innerHTML = text;
             }, 1000);
-        }
-
-        function stopTimer() {
-            clearInterval(timer);
         }
 
         function convertSecondsIntoTimerString(numberOfSeconds) {
@@ -101,7 +98,7 @@
             var recordsStartYear = (new Date(record.start)).getFullYear();
 
             if (recordsStartYear == thisYear) {
-                stopTimer();
+                //stopTimer();
                 finalizeRecord();
                 record = initEmptyRecord();
                 record.rType = recType;
@@ -110,7 +107,7 @@
                 record.rType = recType;
                 record.start = new Date();
             } 
-            startTimer();
+            startTimer(); 
             displayRecords();
         }
 
@@ -122,7 +119,6 @@
         }
 
         function resetTimers() {
-            stopTimer();
             finalizeRecord();
             displayRecords();
             record = initEmptyRecord();
