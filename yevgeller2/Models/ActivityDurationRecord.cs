@@ -11,6 +11,6 @@ namespace yevgeller2.Models
         public int DurationInSeconds { get; set; }
         public string RecordType { get; set; }
         public string UserId { get; set; }
-        public List<ApplicationUser> Users { get; set; }
+
     }
 }

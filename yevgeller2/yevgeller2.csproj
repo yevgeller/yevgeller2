@@ -222,6 +222,10 @@
     <Compile Include="Migrations\201801121841146_Added FK for user into ActivityDurationRecords.Designer.cs">
       <DependentUpon>201801121841146_Added FK for user into ActivityDurationRecords.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801122251059_RemoveUsersListFromActivityDurationObject.cs" />
+    <Compile Include="Migrations\201801122251059_RemoveUsersListFromActivityDurationObject.Designer.cs">
+      <DependentUpon>201801122251059_RemoveUsersListFromActivityDurationObject.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityDurationRecord.cs" />
     <Compile Include="Models\ProjectAction.cs" />
     <Compile Include="Models\TempStorageTag.cs" />
@@ -397,6 +401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801121841146_Added FK for user into ActivityDurationRecords.resx">
       <DependentUpon>201801121841146_Added FK for user into ActivityDurationRecords.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801122251059_RemoveUsersListFromActivityDurationObject.resx">
+      <DependentUpon>201801122251059_RemoveUsersListFromActivityDurationObject.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
