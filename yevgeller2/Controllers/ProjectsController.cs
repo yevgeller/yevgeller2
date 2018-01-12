@@ -374,6 +374,11 @@ namespace yevgeller2.Controllers
             //return RedirectToAction("Index", "Projects");
         }
 
+        public ActionResult FunTimer()
+        {
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             _db = null;
