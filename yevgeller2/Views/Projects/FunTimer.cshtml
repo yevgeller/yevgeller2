@@ -3,15 +3,21 @@
     ViewBag.Title = "FunTimer";
 }
 
-<h2>Track the fun and work time here.</h2>
-<div>The local time is: <span id="localTime"></span></div>
-<button id="startWork" onclick="startWork()" class="btn">Start working</button>
-<button id="startFun" onclick="startFun()" class="btn">Start fun</button>
-<button id="resetButton" onclick="resetTimers()" class="btn">Reset timers</button>
-<div id="time" style="color:red"></div>
-<div id="time2" style="color:green"></div>
-<div id="result" style="color:blue"></div>
-<div id="totalSeconds" style="color:aqua"></div>
+<h2>Track your work time vs time spent slacking off.</h2>
+<div>Data is only stored in this page and not sent anywhere unless you're an authorized user. If you leave this page, nothing is saved. The local time is: <span id="localTime" style="font-weight:bold"></span></div>
+<div class="voffset20">
+    <button id="startWork" onclick="startWork()" class="btn btn-success">Start tracking work (and stop tracking fun)</button>
+</div>
+<div class="voffset20">
+    <button id="startFun" onclick="startFun()" class="btn btn-info">Track fun (and stop tracking work)</button>
+</div>
+<div class="voffset50">
+    <button id="resetButton" onclick="resetTimers()" class="btn btn-warning">Reset timers (and track nothing)</button>
+</div>
+
+<div id="time2" style="color:green" class="voffset20"></div>
+<div id="result" class="voffset20"></div>
+<div id="summary" class="voffset50"></div>
 
 @section scripts
 {
@@ -83,22 +89,30 @@
         }
 
         function displayRecords() {
+            var workSeconds = 0;
+            var funSeconds = 0;
+
             var result = "";
             for (var i = 0; i < records.length; i++) {
+                if (records[i].rType == "Work") { workSeconds += records[i].durationSeconds; }
+                else if (records[i].rType == "Fun") { funSeconds += records[i].durationSeconds; }
                 var startDt = new Date(records[i].start);
-                var endDt = new Date(records[i].end);
+                var endDt = new Date(records[i].end); //need to make dates a little more pretty
                 result += startDt.toLocaleTimeString() + "-" + endDt.toLocaleTimeString() +
                     "; " + records[i].rType + " for " + records[i].durationString + "\n";
             }
             document.getElementById("result").innerText = result;
+            if (records.length > 1) {
+                result = "Historic records show that so far " +
+                    convertSecondsIntoTimerString(workSeconds) + " were spent working while " +
+                    convertSecondsIntoTimerString(funSeconds) + " were spent slacking off."
+
+                document.getElementById("summary").innerText = result;
+            }
         }
 
         function processRecord(recType) {
-            var thisYear = (new Date()).getFullYear();
-            var recordsStartYear = (new Date(record.start)).getFullYear();
-
-            if (recordsStartYear == thisYear) {
-                //stopTimer();
+            if (recordIsEmpty() == false) {
                 finalizeRecord();
                 record = initEmptyRecord();
                 record.rType = recType;
@@ -106,9 +120,15 @@
             } else { //just starting
                 record.rType = recType;
                 record.start = new Date();
-            } 
-            startTimer(); 
+            }
+            startTimer();
             displayRecords();
+        }
+
+        function recordIsEmpty() {
+            var thisYear = (new Date()).getFullYear();
+            var recordsStartYear = (new Date(record.start)).getFullYear();
+            return recordsStartYear < thisYear;
         }
 
         function finalizeRecord() {
@@ -116,11 +136,40 @@
             record.durationString = convertSecondsIntoTimerString(totalSeconds);
             record.durationSeconds = totalSeconds;
             records.push(record);
+            var dto = {
+                startDateTime: parseStringToTime(record.start),
+                endDateTime: parseStringToTime(record.end),
+                durationInSeconds: record.durationSeconds,
+                recordType: record.rType
+            };
+            var recordUrl = "/api/projectsapi/recordActivityPeriod";
+            $.post(recordUrl, dto); //.done(function () { }).fail(function () {}); --don't care
+        }
+
+        function parseStringToTime(inputString) {
+            var d = new Date(inputString);
+
+            return d.getFullYear() + "-" +
+                padToTwoSymbols(d.getMonth() + 1) + "-" +
+                padToTwoSymbols(d.getDate()) + " " +
+                padToTwoSymbols(d.getHours()) + ":" +
+                padToTwoSymbols(d.getMinutes()) + ":" +
+                padToTwoSymbols(d.getSeconds());
+        }
+
+        function padToTwoSymbols(inputValue) {
+            if (inputValue < 10) {
+                return "0" + inputValue;
+            } else {
+                return inputValue;
+            }
         }
 
         function resetTimers() {
-            finalizeRecord();
-            displayRecords();
+            if (recordIsEmpty() == false) {
+                finalizeRecord();
+                displayRecords();
+            }
             record = initEmptyRecord();
             startTimer();
             $("#startWork").prop("disabled", false);

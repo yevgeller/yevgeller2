@@ -374,6 +374,7 @@ namespace yevgeller2.Controllers
             //return RedirectToAction("Index", "Projects");
         }
 
+        [AllowAnonymous]
         public ActionResult FunTimer()
         {
             return View();

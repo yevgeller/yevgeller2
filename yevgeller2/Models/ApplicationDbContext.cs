@@ -11,6 +11,7 @@ namespace yevgeller2.Models
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<TempStorageTag> TempStorageTags { get; set; }
+        public virtual DbSet<ActivityDurationRecord> ActivityDurationRecords { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

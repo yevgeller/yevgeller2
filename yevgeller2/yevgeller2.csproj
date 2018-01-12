@@ -197,6 +197,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\api\ProjectsApiController.cs" />
+    <Compile Include="DTOs\ActivityDurationRecordDTO.cs" />
     <Compile Include="Migrations\201712292240159_WebAPI_for_Project_Tags.cs" />
     <Compile Include="Migrations\201712292240159_WebAPI_for_Project_Tags.Designer.cs">
       <DependentUpon>201712292240159_WebAPI_for_Project_Tags.cs</DependentUpon>
@@ -213,6 +214,15 @@
     <Compile Include="Migrations\201801021744590_AddingOptionToHideProject.Designer.cs">
       <DependentUpon>201801021744590_AddingOptionToHideProject.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801121839272_Added table for FunTimer.cs" />
+    <Compile Include="Migrations\201801121839272_Added table for FunTimer.Designer.cs">
+      <DependentUpon>201801121839272_Added table for FunTimer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801121841146_Added FK for user into ActivityDurationRecords.cs" />
+    <Compile Include="Migrations\201801121841146_Added FK for user into ActivityDurationRecords.Designer.cs">
+      <DependentUpon>201801121841146_Added FK for user into ActivityDurationRecords.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ActivityDurationRecord.cs" />
     <Compile Include="Models\ProjectAction.cs" />
     <Compile Include="Models\TempStorageTag.cs" />
     <Compile Include="DTOs\TagDto.cs" />
@@ -381,6 +391,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801021744590_AddingOptionToHideProject.resx">
       <DependentUpon>201801021744590_AddingOptionToHideProject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801121839272_Added table for FunTimer.resx">
+      <DependentUpon>201801121839272_Added table for FunTimer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801121841146_Added FK for user into ActivityDurationRecords.resx">
+      <DependentUpon>201801121841146_Added FK for user into ActivityDurationRecords.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

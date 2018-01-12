@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Web.Http;
 using yevgeller2.DTOs;
 using yevgeller2.Models;
@@ -70,6 +72,29 @@ namespace yevgeller2.Controllers.api
             _db.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpPost]
+        public HttpResponseMessage RecordActivityPeriod(ActivityDurationRecordDTO adr)
+        {
+            if (User.Identity.IsAuthenticated == false)
+                return Request.CreateResponse(System.Net.HttpStatusCode.Unauthorized);
+
+            DateTime a = DateTime.ParseExact(adr.StartDateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            DateTime z = DateTime.ParseExact(adr.EndDateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            
+            ActivityDurationRecord record = new ActivityDurationRecord
+            {
+                StartDateTime = Convert.ToDateTime(adr.StartDateTime),
+                EndDateTime = Convert.ToDateTime(adr.EndDateTime),
+                DurationInSeconds = adr.DurationInSeconds,
+                RecordType = adr.RecordType,
+                UserId = userId
+            };
+
+            _db.ActivityDurationRecords.Add(record);
+            _db.SaveChanges();
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK);
         }
     }
 }
